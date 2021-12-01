@@ -13,7 +13,7 @@ const getPosts = (req, res) => {
 
 const getPostById = (req, res) => {
   const { id } = req.params;
-  taskModel
+  postModel
     .find({ _id: id, user: req.token.id })
     .then((result) => {
       if (result) {
@@ -29,7 +29,7 @@ const getPostById = (req, res) => {
 
 const deletePost = (req, res) => {
   const { id } = req.params;
-  taskModel
+  postModel
     .findByIdAndUpdate(id, { $set: { isdel: true } })
     .exec()
     .then((result) => {
@@ -43,7 +43,7 @@ const deletePost = (req, res) => {
 const updatePost = (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
-  taskModel
+  postModel
     .findByIdAndUpdate(id, { $set: { name: name } })
     .then((result) => {
       if (result) {

@@ -1,10 +1,10 @@
-const roleModel = require("./../../db/models/role");
+const roleModel = require("../../db/models/role");
 
 const authorization = async (req, res, next) => {
   try {
     const userId = req.token.role;
     const result = await roleModel.findById(userId);
-    if (result.role === "admin") {
+    if (result.role === "AdminAbdulhakim") {
       next();
     } else {
       return res.status(403).json({ message: "forbidden" });
