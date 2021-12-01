@@ -64,4 +64,33 @@ const logIn = (req, res) => {
     });
 };
 
-module.exports = { signUp, logIn };
+
+const deleteUser = (req, res) => {
+  const { id } = req.params;
+  userModel
+    .findByIdAndRemove(id)
+    .exec()
+    .then((result) => {
+      res.status(200).json("Deleted");
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+const updateUser = (req, res) => {
+  const { email } = req.body;
+  const { id } = req.params;
+  userModel
+    .findByIdAndUpdate(id, { $set: { email: email } })
+    .then((result) => {
+      if (result) {
+        res.status(200).json("updated");
+      } else {
+        res.status(404).json(err);
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
+module.exports = { signUp, logIn, deleteUser, updateUser };
