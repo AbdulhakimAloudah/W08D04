@@ -1,0 +1,219 @@
+how to create a backend project
+first we create our server 
+- create a folder for your backend project
+- open the folder in vs code
+- open the terminal 
+- initialize a package.json file, by running the following command :
+npm init -y
+- install the packages that you need for your projects, by running the following commands : 
+npm i express
+npm i dotenv
+npm i nodemon (if you don't have it installed globally)
+- create .env file to save your senstive data
+- create .gitignore file, it should ignore the our node modules and our environment variables, add the following inside your .gitignore file
+/node_modules
+.env
+- create an index.js file
+- go to the package.json file, and add the following scripits inside it
+"start":"node index.js"
+"dev":"nodemon index.js"
+- go to your index.js file, and import the packages that you need
+import express = require("express")
+import dotenv = require("dotenv")
+- inside the index.js file, instantiate express
+const app = express()
+- inside the index.js file, load your environment variables
+dotenv.config()
+- inside the .env file, define your port number
+PORT=5000
+- inside the index.js file, create a variable called PORT that will hold the value from the .env file
+const PORT = process.env.PORT
+- at the end of your index.js file, listen to your app connection on the port you defined before
+app.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
+});
+- open your terminal, and run your server by using nodemon package by using the following command
+npm run dev
+- your server should be up and running now, if not check the previous steps
+before working on your MVC (model viewer controller) and your database, use a built-in app level middleware to handle your json data
+- app.use(express.json());
+how to create your database
+mongoose docs link : https://mongoosejs.com/docs/guide.html
+- we are going to be working with mongoDB, so first we need to install the mongoose package
+npm i mongoose
+- inside your backend folder, create a folder called db
+- inside your db folder, create a file called db.js
+- inside db.js file, import mongoose
+const mongoose = require("mongoose")
+- to establish connection we need to add options and DB_name
+- so first we need to create a variable that will hold the value of our options
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+- we can save our DB_name as environment variable
+- go to your .env file and add your DB_name there
+DB=DB_NAME
+- go to your db.js file, import and configure the dotenv package there
+const dotenv = require("dotenv");
+dotenv.config();
+const DB = process.env.DB;
+- to establish the connection we use the following 
+mongoose.connect(`mongodb://localhost:27017/${DB}`, options).then(
+  () => {
+    console.log("DB Ready To Use");
+  },
+  (err) => {
+    console.log(err);
+  }
+);
+- go to your index.js file, and import the db file there
+const db = require("./db/db.js");
+- run you express server, and you should get the following
+server is running on port 5000
+DB Ready To Use
+- if you didn't get the previous outcome on your terminal, check your previous steps
+now after our connection is ready we can start working on our schemas
+- inside the db folder, create a folder called models
+- inside models folder, we create our schemas
+- inside the models folder, create someSchema.js
+- inside someSchema.js file, import mongoose
+const mongoose = require("mongoose");
+- to create our schema we use the following
+const someSchema = new mongoose.Schema({
+  someKey: { type: String, required: true },
+  date: { type: Date, default: new Date() },
+  isDeleted: { type: String, default: false },
+  someNumber: { type: Number, required: true, unique: true },
+});
+notice when creating the data we want to save we can give them some option, for example:
+type : we can determine which type of data to be expected
+required: to determine that the data is something to be expected, and not to be left Null
+unique: to determine that this data can't be a duplicate
+default: to determine the default value of the data
+- export the schema so we can use it in our controllers
+module.exports = mongoose.model("Some", someSchema);
+how to create MVC
+- create a folder called routers inside your backend folder
+- inside the Routers folder create two folders, routes and controllers
+- inside the controllers folder, create a file (someFile.js) that will hold our functions to handle the requests and responses on our endpoints that will be defined in the routes folder
+- import the schema that you need to work on here
+const someModel = require("./../../db/models/someSchema");
+example for creating some data, by using someModel schema :
+someFile.js
+
+------------------------------------------
+const someFunc = (req, res) =>{
+const { someKey, someNumber } = req.body;
+  const newSomeData = new someModel({
+    someKey, 
+    someNumber 
+  });
+  newSomeData 
+    .save()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+}
+example for reteriving all the data that we created earlier, by using someModel schema :
+const anotherFunc = (req, res) =>{
+  someModel
+    .find({})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+});
+- don't forget to send a response
+- don't forget to export the functions that you have created inside file controller (someFile.js)
+- you can create multiple files inside the controller folder, to handle your requests
+module.exports= { someFunc, anotherFunc }
+- inside the routes folder, create a file (someFile.js) that will handle your endpoints and your controllers
+for example :
+someFile.js
+const express = require("express")
+const { someFunc, anotherFunc } = require("./../controllers/someFile.js")
+const someRouter = express.Router()
+- don't forget to import express, so we can create our router
+- don't forget to import the controllers, that you have created in the controllers folder
+to create our endpoint, we call the router that we have created followed by the http request that we are going to use
+someRouter.get("/someEndpoint", someFunc)
+someRouter.get("/anotherEndpoint", anotherFunc)
+- don't forget to export the router that you have created
+module.exports = someRouter 
+- go to your index.js file and import the router that you have created, then create a router level middleware
+const someRouter = require("./routers/routes/someFile");
+app.use("/somePath", someRouter);
+- now you should be done with your endpoints, test your endpoint on postman, if its not working check the previous steps
+some usefull built-in level middleware that we can use 
+- [optional] some of the usefull built-in app level middleware that we can use is morgan, which can help us read our requests and response 
+- to add morgan to our project, we will need to install the package then import it in our index.js file so we can use it 
+- open the terminal and install the package by using the following command : 
+npm i morgan
+- import morgan inside your index.js file
+const morgan = require("morgan");
+- to use the middleware, write this code inside your index.js file
+app.use(morgan("dev"));
+we can change the option inside the paramter to get different outcome
+a must have package that we need to link our backend with our frontend is called cors, we use it so we don't get cors error
+- open the terminal and install the package by using the following command
+npm i cors
+- import cors inside your index.js file
+const cors = require("cors");
+- to use the middleware, write this code inside your index.js file
+app.use(cors());
+querying in mongoDB
+this is an example of querying for a list of users from age 20 to 30, plus sending a response of the userName and age of the user in a decending order for the age
+userModel
+  .find({})
+  .where("age")
+  .gt(20)
+  .lt(30) 
+  .sort({ age: -1 }) 
+  .select("userName age") 
+  .exec() 
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((err) => {
+    res.send(err);
+  });
+an example for having a refernce from another scheam
+const userSchema = new mongoose.Schema({
+  userName: { type: String, required: true, unique: true },
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Role",
+    default: "we copy the id from the role we created in the role schema",
+  },
+});
+const roleSchema = new mongoose.Schema({
+  typeOfUser: { type: String, required: true, unique: true },
+})
+Collapse
+
+
+
+
+
+
+
+
+
+
+Send a message to elq-js1-oct-21-students
+
+
+
+
+
+
+
+
+
+
