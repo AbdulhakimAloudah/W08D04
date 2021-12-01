@@ -11,7 +11,8 @@ app.use(express.json());
 const roleRouter = require("./routers/routes/role");
 app.use( roleRouter);
 
-
+const userSchema = require("./routers/routes/user");
+app.use( userSchema);
 
 
 const PORT = process.env.PORT || 5000;

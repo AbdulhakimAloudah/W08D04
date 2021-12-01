@@ -40,12 +40,14 @@ const logIn = (req, res) => {
       if (result) {
         if (saveEmail == result.email) {
          
-          const savePass = await bcrypt.compare(password, result.password); 
+          const savePass = await bcrypt.compare(password, result.password);
+          console.log(savePass); 
           if (savePass) {
             const payload = {
               role: result.role,
             };
             const token = await jwt.sign(payload, SECRETKEY);
+            console.log(token);
             res.status(200).json({ result, token });
           } else {
             res.status(400).json("invalid email or password");
