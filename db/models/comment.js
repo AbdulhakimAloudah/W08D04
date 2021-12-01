@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const comment = new mongoose.Schema({
+const commentS = new mongoose.Schema({
   desc: { type: String, required: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
@@ -8,4 +8,4 @@ const comment = new mongoose.Schema({
   timeStamp: { type: Date, default: new Date() },
 });
 
-module.exports = mongoose.model("Comment", comment);
+module.exports = mongoose.model("Comment", commentS);
