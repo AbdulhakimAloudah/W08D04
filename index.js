@@ -15,6 +15,10 @@ const userSchema = require("./routers/routes/user");
 app.use( userSchema);
 
 
+const postRouter = require("./routers/routes/post");
+app.use(postRouter);
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);

@@ -59,7 +59,7 @@ const updatePost = (req, res) => {
 
 const createPost = (req, res) => {
   const { desc, img, isDeleted } = req.body;
-  const newPost = new postModel({ desc, img, isDeleted, user: req.token.id });
+  const newPost = new postModel({ desc, img });
   newPost
     .save()
     .then((result) => {

@@ -5,13 +5,13 @@ const {
   createPost,
   updatePost,
   deletePost,
-} = require("./../controller/post");
-const authentication = require("./../middleware/authentication");
-const authorization = require("./../middleware/authorization");
+} = require("./../controllers/post");
+// const authentication = require("./../middleware/authentication");
+// const authorization = require("./../middleware/authorization");
 const postRouter = express.Router();
-postRouter.post("/addPost", authentication, authorization, createPost);
-postRouter.get("/getPost", authentication, authorization, getPosts);
-postRouter.get("/getPostById/:id", authentication, authorization, getPostById);
-postRouter.delete("/deletePost/:id", authentication, authorization, deletePost);
-postRouter.put("/updatePost/:id", authentication, authorization, updatePost);
+postRouter.post("/add", createPost);
+postRouter.get("/getPost", getPosts);
+postRouter.get("/getPostById/:id", getPostById);
+postRouter.delete("/deletePost/:id", deletePost);
+postRouter.put("/updatePost/:id", updatePost);
 module.exports = postRouter;
