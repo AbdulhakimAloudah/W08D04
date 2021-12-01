@@ -1,11 +1,9 @@
 const mongoose = require("mongoose");
-
-const commentS = new mongoose.Schema({
-  desc: { type: String, required: true },
+const comment = new mongoose.Schema({
+  description: { type: String, required: true },
+  time: { type: Date, default: new Date() },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
-  isDelete: { type: Boolean, default: false },
-  timeStamp: { type: Date, default: new Date() },
+  isDel: { type: Boolean, default: false },
 });
-
-module.exports = mongoose.model("Comment", commentS);
+module.exports = mongoose.model("Comment", comment);
