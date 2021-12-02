@@ -10,7 +10,7 @@ const authentication = require("./../middleware/authentication");
 const authorization = require("./../middleware/authorization");
 
 const commentRouter = express.Router();
-commentRouter.post("/addComment", authentication, addComment);
+commentRouter.post("/addComment",authentication, addComment);
 commentRouter.get("/getComment", authentication, getComment);
 commentRouter.get("/getCommentById/:id", getCommentById);
 commentRouter.delete("/deleteComment/:id", authentication, deleteComment);

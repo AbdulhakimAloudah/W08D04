@@ -5,7 +5,7 @@ const addComment = (req, res) => {
   const newcomment = new commentModel({
     description,
     postId,
-    userId,
+    userId: req.token.userId,
   });
   newcomment
     .save()
