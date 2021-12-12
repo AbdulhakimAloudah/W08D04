@@ -1,8 +1,8 @@
 const likesModel = require("../../db/models/like");
 
-// like toggle
+
 const likePost = (req, res) => {
-  const { by, onPost } = req.body; // by: req.token.id ?
+  const { by, onPost } = req.body; 
   likesModel.findOne({ by, onPost }).then((result) => {
     console.log(result);
     if (result) {

@@ -1,6 +1,6 @@
 const express = require("express");
-const { likePost, checkLike } = require("./../controllers/likes");
-const authentication = require("./../middleWhere/authentication");
+const { likePost, checkLike } = require("./../controllers/like");
+const authentication = require("./../middleware/authentication");
 
 const likesRouter = express.Router();
 
