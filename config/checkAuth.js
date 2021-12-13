@@ -1,0 +1,15 @@
+module.exports = {
+  authentication: function (req, res, next) {
+    console.log(req.isAuthenticated());
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.json({ error: "Please log in first!" });
+  },
+  forwardAuthenticated: function (req, res, next) {
+    if (!req.isAuthenticated()) {
+      return next();
+    }
+    res.json({ success: "okayyyyyyyyyyyyyy!" });
+  },
+};
