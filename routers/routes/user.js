@@ -4,6 +4,6 @@ const userSchema = express.Router();
 const { signUp, logIn } = require("./../controllers/user");
 
 userSchema.post("/signup", signUp);
-userSchema.post("/log", logIn); // post for security -- post is more secure than get
+userSchema.post("/log", logIn); 
 
 module.exports = userSchema;
