@@ -1,8 +1,11 @@
 const postModel = require("../../db/models/post");
 
+
+
+//ok
 const getPosts = (req, res) => {
   postModel
-    .find({ isDeleted: false, user: req.token.id })
+    .find({ isDeleted: false, user: req.id })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -11,10 +14,11 @@ const getPosts = (req, res) => {
     });
 };
 
+//ok
 const getPostById = (req, res) => {
   const { id } = req.params;
   postModel
-    .find({ _id: id, user: req.token.id })
+    .find({ _id: id, user: req.id })
     .then((result) => {
       if (result) {
         res.status(200).json(result);
@@ -27,6 +31,8 @@ const getPostById = (req, res) => {
     });
 };
 
+
+//ok
 const deletePost = (req, res) => {
   const { id } = req.params;
   postModel
@@ -40,6 +46,8 @@ const deletePost = (req, res) => {
     });
 };
 
+
+//ok
 const updatePost = (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
@@ -56,7 +64,7 @@ const updatePost = (req, res) => {
       res.status(400).json(err);
     });
 };
-
+//ok
 const createPost = (req, res) => {
   const { desc, img, isDeleted } = req.body;
   const newPost = new postModel({ desc, img });

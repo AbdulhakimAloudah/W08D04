@@ -6,14 +6,14 @@ const {
   getComment,
   addComment,
 } = require("./../controllers/comment");
-const authentication = require("./../middleware/authentication");
-const authorization = require("./../middleware/authorization");
+// const authentication = require("./../middleware/authentication");
+// const authorization = require("./../middleware/authorization");
 
 const commentRouter = express.Router();
-commentRouter.post("/addComment",authentication, addComment);
-commentRouter.get("/getComment", authentication, getComment);
+commentRouter.post("/addComment", addComment);
+commentRouter.get("/getComment", getComment);
 commentRouter.get("/getCommentById/:id", getCommentById);
-commentRouter.delete("/deleteComment/:id", authentication, deleteComment);
-commentRouter.put("/updateComment/:id", authentication, updateComment);
+commentRouter.delete("/deleteComment/:id", deleteComment);
+commentRouter.put("/updateComment/:id", updateComment);
 
 module.exports = commentRouter;

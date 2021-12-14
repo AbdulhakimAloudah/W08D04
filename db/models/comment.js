@@ -8,3 +8,4 @@ const comment = new mongoose.Schema({
   isDel: { type: Boolean, default: false },
 });
 module.exports = mongoose.model("Comment", comment);
+

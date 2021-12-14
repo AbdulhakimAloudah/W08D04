@@ -1,11 +1,12 @@
 const commentModel = require("../../db/models/comment");
 
+//ok
 const addComment = (req, res) => {
   const { description, userId, postId } = req.body;
   const newcomment = new commentModel({
     description,
     postId,
-    userId: req.token.userId,
+    userId,
   });
   newcomment
     .save()
