@@ -1,9 +1,9 @@
 const express = require("express");
-const { likePost, checkLike } = require("./../controllers/like");
-const authentication = require("./../middleware/authentication");
+const { addLike, deleteLike } = require("./../controllers/like");
 
-const likesRouter = express.Router();
+const likeRouter = express.Router();
 
-likesRouter.get("/:onPost", authentication, checkLike);
-likesRouter.put("/", authentication, likePost);
-module.exports = likesRouter;
+likeRouter.post("/addLike", addLike);
+likeRouter.delete("/deleteLike/:id", deleteLike);
+
+module.exports = likeRouter;

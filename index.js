@@ -1,12 +1,11 @@
 const express = require("express");
 require("dotenv").config();
-const cors = require('cors')
+const cors = require("cors");
 
 const db = require("./db/db.js");
 const app = express();
 app.use(express.json());
-app.use(cors())
-
+app.use(cors());
 
 const roleRouter = require("./routers/routes/role");
 app.use(roleRouter);
@@ -20,7 +19,7 @@ app.use(postRouter);
 const commentRouter = require("./routers/routes/comment");
 
 const likesRouter = require("./routers/routes/like");
-app.use("/likes", likesRouter);
+app.use(likesRouter);
 
 app.use(commentRouter);
 

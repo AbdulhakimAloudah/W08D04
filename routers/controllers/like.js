@@ -1,44 +1,39 @@
-const likesModel = require("../../db/models/like");
+const likeModel = require("../../db/models/like");
+const postModel = require("../../db/models/post");
 
 
-const likePost = (req, res) => {
-  const { by, onPost } = req.body; 
-  likesModel.findOne({ by, onPost }).then((result) => {
-    console.log(result);
-    if (result) {
-      likesModel.deleteOne({ by, onPost }, function (err) {
-        if (err) return handleError(err);
-      });
-      res.status(200).json("unliked successfully");
-    } else {
-      const like = new likesModel({
-        by,
-        onPost,
-      });
-      like
-        .save()
-        .then((result) => {
-          res.status(201).json(`liked successfully`);
-        })
-        .catch((err) => {
-          res.send(err);
-        });
-    }
+//ok
+const addLike = (req, res) => {
+  const { postId } = req.body;
+  const newlike = new likeModel({
+    postId: postId,
+    userId: req.id,
   });
+  newlike
+    .save()
+    .then((result) => {
+      postModel
+        .findByIdAndUpdate(postId, { $push: { like: result._id } })
+        .then((result) => {});
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
 
-const checkLike = (req, res) => {
-  const { onPost } = req.params; 
-  likesModel.findOne({ by: req.token.id, onPost }).then((result) => {
-    if (result) {
-      res.status(201).json("its liked");
-    } else {
-      res.status(200).json(`its unliked`);
-    }
-  });
-};
+//ok
+const deleteLike = (req, res) => {
+  const { id } = req.params;
 
-module.exports = {
-  likePost,
-  checkLike,
+  likeModel
+    .findByIdAndRemove(id)
+    .exec()
+    .then((result) => {
+      res.status(200).json("disliked");
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 };
+module.exports = { deleteLike, addLike };
