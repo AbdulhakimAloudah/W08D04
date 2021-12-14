@@ -8,13 +8,14 @@ const bcrypt = require("bcrypt");
 const SALT = Number(process.env.SALT);
 //ok
 const signUp = async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password, role, username } = req.body;
   const saveEmail = email.toLowerCase();
   const savePass = await bcrypt.hash(password, SALT);
 
   const newUser = new userModel({
     email: saveEmail,
     password: savePass,
+    username,
     role,
   });
 
@@ -30,16 +31,16 @@ const signUp = async (req, res) => {
 
 //ok
 const logIn = (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   const saveEmail = email.toLowerCase();
 
   userModel
     .findOne({ email: saveEmail })
     .then(async (result) => {
       if (result) {
-        if (saveEmail == result.email) {
+        if (saveEmail == result.email || username === result.username) {
           const savePass = await bcrypt.compare(password, result.password);
-          console.log(savePass);
+
           if (savePass) {
             const payload = {
               role: result.role,
@@ -79,7 +80,6 @@ const deleteUser = (req, res) => {
       res.status(200).json(err);
     });
 };
-
 
 //ok
 const updateUser = (req, res) => {

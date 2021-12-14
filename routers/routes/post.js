@@ -10,7 +10,7 @@ const {
 // const authorization = require("./../middleware/authorization");
 
 const postRouter = express.Router();
-postRouter.post("/add", createPost);
+postRouter.post("/addPost", createPost);
 postRouter.get("/getPosts", getPosts);
 postRouter.get("/getPostById/:id", getPostById);
 postRouter.delete("/deletePost/:id", deletePost);

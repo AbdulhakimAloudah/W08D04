@@ -9,7 +9,7 @@ const {
 } = require("./../controllers/user");
 
 userSchema.post("/signup", signUp);
-userSchema.post("/log", logIn);
+userSchema.post("/login", logIn);
 userSchema.delete("/delete/:id", deleteUser);
 userSchema.post("/updat/:id", updateUser);
 
