@@ -1,5 +1,5 @@
 const commentModel = require("../../db/models/comment");
-
+const postModel = require("./../../db/models/post");
 //ok
 const addComment = (req, res) => {
   const { description, userId, postId } = req.body;
@@ -11,13 +11,18 @@ const addComment = (req, res) => {
   newcomment
     .save()
     .then((result) => {
-      res.status(201).json(result);
+      postModel
+        .findByIdAndUpdate(postId, { $push: { commentId: result._id } })
+        .then((result) => {
+          res.status(201).json(result);
+        });
     })
     .catch((err) => {
       res.status(400).json(err);
     });
 };
 
+//ok
 const getComment = (req, res) => {
   commentModel
     .find({})
@@ -30,6 +35,7 @@ const getComment = (req, res) => {
     });
 };
 
+//ok
 const getCommentById = (req, res) => {
   const { id } = req.params;
   commentModel
@@ -46,28 +52,22 @@ const getCommentById = (req, res) => {
     });
 };
 
+//ok
 const deleteComment = async (req, res) => {
   const { id } = req.params;
 
-  const comment = await commentModel.findById(id);
-
-  if (
-    comment.userId === req.token.userId ||
-    req.token.role === "61a862e865ef6f0a32075c1b"
-  ) {
-    commentModel
-      .findByIdAndUpdate(id, { $set: { isDel: true } })
-      .exec()
-      .then((result) => {
-        res.status(200).json("Deleted");
-      })
-      .catch((err) => {
-        res.status(400).json("you Don't have authorization");
-      });
-  } else {
-    res.status(403).json({ message: "forbiden" });
-  }
+  commentModel
+    .findByIdAndUpdate(id, { $set: { isDel: true } })
+    .exec()
+    .then((result) => {
+      res.status(200).json("Deleted");
+    })
+    .catch((err) => {
+      res.status(400).json("you Don't have authorization");
+    });
 };
+
+//ok
 const updateComment = (req, res) => {
   const { description } = req.body;
   const { id } = req.params;
