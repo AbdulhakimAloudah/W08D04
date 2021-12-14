@@ -1,13 +1,12 @@
 const userModel = require("./../../db/models/user");
 require("dotenv").config();
 
-
 const jwt = require("jsonwebtoken");
 const SECRETKEY = process.env.SECRETKEY;
 
 const bcrypt = require("bcrypt");
 const SALT = Number(process.env.SALT);
-
+//ok
 const signUp = async (req, res) => {
   const { email, password, role } = req.body;
   const saveEmail = email.toLowerCase();
@@ -29,6 +28,7 @@ const signUp = async (req, res) => {
     });
 };
 
+//ok
 const logIn = (req, res) => {
   const { email, password } = req.body;
   const saveEmail = email.toLowerCase();
@@ -63,18 +63,25 @@ const logIn = (req, res) => {
     });
 };
 
+//ok
 const deleteUser = (req, res) => {
   const { id } = req.params;
   userModel
-    .findByIdAndRemove(id)
-    .exec()
+    .findByIdAndUpdate(id, { $set: { isDeleted: true } })
     .then((result) => {
-      res.status(200).json("Deleted");
+      if (result) {
+        res.status(200).json("user removed");
+      } else {
+        res.status(200).json("user does not exist");
+      }
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(200).json(err);
     });
 };
+
+
+//ok
 const updateUser = (req, res) => {
   const { email } = req.body;
   const { id } = req.params;

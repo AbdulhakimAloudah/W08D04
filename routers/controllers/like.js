@@ -28,7 +28,7 @@ const likePost = (req, res) => {
 };
 
 const checkLike = (req, res) => {
-  const { onPost } = req.params; // by: req.token.id ?
+  const { onPost } = req.params; 
   likesModel.findOne({ by: req.token.id, onPost }).then((result) => {
     if (result) {
       res.status(201).json("its liked");
